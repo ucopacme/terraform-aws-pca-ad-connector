@@ -33,6 +33,6 @@ No modules.
 | Name | Description |
 |------|-------------|
 | <a name="output_directory_id"></a> [directory\_id](#output\_directory\_id) | Directory Service ID |
-| <a name="output_directory_name"></a> [directory\_name](#output\_directory\_name) | n/a |
+| <a name="output_directory_name"></a> [directory\_name](#output\_directory\_name) | domain name |
 | <a name="output_pca_certificate_authorities"></a> [pca\_certificate\_authorities](#output\_pca\_certificate\_authorities) | Certificate Authorities attached to PCA connectors |
 | <a name="output_pca_connector_ids"></a> [pca\_connector\_ids](#output\_pca\_connector\_ids) | Map of PCA Connector for AD IDs |

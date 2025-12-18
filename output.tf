@@ -5,6 +5,7 @@ output "directory_id" {
 
 output "directory_name" {
   value = aws_directory_service_directory.this.name
+  description = "domain name"
 }
 
 
