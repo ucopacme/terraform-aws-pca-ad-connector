@@ -1,0 +1,64 @@
+
+
+module "ad_multi_connectors" {
+  source = "git::https://git@github.com/ucopacme/terraform-aws-pca-ad-connector.git"
+
+  directory = {
+    domain     = "example.com"
+    password   = "password"
+    size       = "Small"
+    dns_ips    = ["ip"]
+    username   = 'username"
+    subnet_ids = ["subnet-1", "subnet-2"]
+    vpc_id     = "vpc-id"
+    tags       = { Environment = "dev", Project = "PKI" }
+  }
+
+  pca_connectors = {
+    connector1 = {
+      certificate_authority_arn = "cert arn"
+      security_group_ids        = ["sg-id"]
+      enable                    = false
+      tags = {
+        Name = "PCA-Connector-1"
+      }
+    }
+
+    connector2 = {
+      certificate_authority_arn = "cert arn"
+      security_group_ids        = ["sg-id"]
+      enable                    = false
+      tags = {
+        Name = "PCA-Connector-2"
+      }
+    }
+  }
+
+}
+
+
+output
+
+output "directory_id" {
+  description = "Directory Service ID"
+  value       = module.ad.directory_id
+}
+
+output "directory_name" {
+  description = "Directory Service name"
+  value       = module.ad.directory_name
+}
+
+
+
+output "pca_connector_ids" {
+  description = "Map of PCA Connector for AD IDs"
+  value       = module.ad.pca_connector_ids
+}
+
+
+
+output "pca_certificate_authorities" {
+  description = "Certificate Authorities attached to PCA connectors"
+  value       = module.ad.pca_certificate_authorities
+}
