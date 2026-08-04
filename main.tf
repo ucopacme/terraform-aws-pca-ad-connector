@@ -1,7 +1,13 @@
+locals {
+  directory_id = var.create_directory ? aws_directory_service_directory.this[0].id : var.existing_directory_id
+}
+
 ############################
 # AD Connector
 ############################
 resource "aws_directory_service_directory" "this" {
+  count = var.create_directory ? 1 : 0
+
   name     = var.directory.domain
   password = var.directory.password
   size     = var.directory.size
@@ -21,10 +27,10 @@ resource "aws_directory_service_directory" "this" {
 ############################
 # Directory Registration
 ############################
-# This resource MUST exist before the connector can be created
-# Only one registration for the directory
 resource "awscc_pcaconnectorad_directory_registration" "this" {
-  directory_id = aws_directory_service_directory.this.id
+  count = var.create_directory ? 1 : 0
+
+  directory_id = local.directory_id
 }
 
 
@@ -35,15 +41,13 @@ resource "awscc_pcaconnectorad_connector" "this" {
   for_each = { for idx, conn in var.pca_connectors : idx => conn if conn.enable }
 
   certificate_authority_arn = each.value.certificate_authority_arn
-  directory_id              = aws_directory_service_directory.this.id
+  directory_id             = local.directory_id
 
   vpc_information = {
     security_group_ids = each.value.security_group_ids
   }
 
-  # Correct depends_on for for_each
   depends_on = [awscc_pcaconnectorad_directory_registration.this]
 
   tags = each.value.tags
 }
-

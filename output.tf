@@ -1,19 +1,12 @@
 output "directory_id" {
-  value       = aws_directory_service_directory.this.id
+  value       = local.directory_id
   description = "Directory Service ID"
 }
 
 output "directory_name" {
-  value = aws_directory_service_directory.this.name
+  value       = var.create_directory ? aws_directory_service_directory.this[0].name : ""
   description = "Domain Name"
 }
-
-
-
-# output "pca_connector_id" {
-#   description = "PCA Connector for AD ID"
-#   value       = try(awscc_pcaconnectorad_connector.this[0].id, null)
-# }
 
 output "pca_connector_ids" {
   description = "Map of PCA Connector for AD IDs"
@@ -22,8 +15,6 @@ output "pca_connector_ids" {
     k => v.id
   }
 }
-
-
 
 output "pca_certificate_authorities" {
   description = "Certificate Authorities attached to PCA connectors"
